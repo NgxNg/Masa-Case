@@ -9,13 +9,4 @@ population = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\population
 wage = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\wage.csv")
 
 
-wage_total <- wage %>%
-  filter(Sex == "Total")
-
-wage_male <- wage %>%
-  filter(Sex == "Male")
-
-wage_female <- wage %>%
-  filter(Sex == "Female")
-  
-  #Fuck me
+# Data Cleaning
