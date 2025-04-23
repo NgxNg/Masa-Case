@@ -17,3 +17,6 @@ wage_male <- wage %>%
 
 wage_female <- wage %>%
   filter(Sex == "Female")
+  
+  #For real
+  
