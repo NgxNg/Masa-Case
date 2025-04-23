@@ -1,20 +1,3 @@
-library(readxl)
-library(dplyr)
-library(VIM)
-library(caret)
-library(RANN)
-library(tidyr)
-library(mice)
-library(magrittr)
-
-birth = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\birth.csv")
-employment = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\employment.csv")
-epf_contribution = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\employment.csv")
-epf_savings = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\epf savings.csv")
-population = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\population.csv")
-wage = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\wage.csv")
-
-  
 # Function to count NAs for each column
 count_na <- function(wage) {
   sapply(wage, function(col) sum(is.na(col)))
@@ -29,7 +12,7 @@ population <- population %>%
       TRUE ~ age.group
     )
   )
-  
+
 # Checking
 count_na(birth)
 count_na(wage)
@@ -42,7 +25,7 @@ count_na(epf_savings)
 ggplot(employment, aes(x=date, y=unemployment.rate....)) +
   geom_line(color = "darkgreen") +
   labs(title = "Unemployment Rate (1982–2023)", x = "Year", y = "Unemployment Rate (%)")
-  
+
 # Birth Rate 
 ggplot(birth, aes(x = year, y = number.of.live.births.per.1000.population)) +
   geom_line(color = "firebrick") +
@@ -79,10 +62,10 @@ ggplot(dependency_ratio, aes(x = year, y = dependency_ratio)) +
   labs(title = "Dependency Ratio Over Time", x = "Year", y = "Dependency Ratio")
 
 # Wage Growth Heatmap by Age Grp 
- wage_heatmap <- wage %>%
+wage_heatmap <- wage %>%
   filter(Sex == "Total") %>%
   mutate(Median.monthly.salaries...wages.of.employees..RM.=as.numeric(gsub(",","",
-  Median.monthly.salaries...wages.of.employees..RM.))) %>%  #converting to numeric#
+                                                                           Median.monthly.salaries...wages.of.employees..RM.))) %>%  #converting to numeric#
   group_by(Year,Age.group) %>%
   summarise(median_wage = median(Median.monthly.salaries...wages.of.employees..RM.))
 
@@ -91,4 +74,3 @@ ggplot(wage_heatmap, aes(x = Year, y = Age.group, fill = median_wage)) +
   scale_fill_viridis_c(name = "Median Wage (RM)") +  # Works for numeric data
   labs(title = "Wage Growth Heatmap by Age Group") +
   theme_minimal() 
-  
