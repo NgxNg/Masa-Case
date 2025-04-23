@@ -1,0 +1,19 @@
+library(readxl)
+library(dplyr)
+
+birth = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\birth.csv")
+employment = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\employment.csv")
+epf_contribution = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\employment.csv")
+epf_savings = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\epf savings.csv")
+population = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\population.csv")
+wage = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\wage.csv")
+
+
+wage_total <- wage %>%
+  filter(Sex == "Total")
+
+wage_male <- wage %>%
+  filter(Sex == "Male")
+
+wage_female <- wage %>%
+  filter(Sex == "Female")
