@@ -1,0 +1,96 @@
+hello = 1234
+library(tidyr)
+library(readxl)
+Withdrawal_data <- read_excel("Withdrawal data.xlsx")
+View(Withdrawal_data)
+
+library(tidyverse)
+# Step 1: Rename the first column to "Withdrawal Scheme"
+names(Withdrawal_data)[1] <- "Withdrawal Scheme"
+colnames_new <- c("withdrawal_scheme", "2023_number", "2023_amount", 
+                  "2022_number", "2022_amount", "2021_number", "2021_amount", 
+                  "2020_number", "2020_amount", "2019_number", "2019_amount")
+colnames(Withdrawal_data) <- colnames_new
+Withdrawal_data <- Withdrawal_data[-1, ]
+View(Withdrawal_data)
+Withdrawal_data[is.na(Withdrawal_data)] <- 0
+
+library(dplyr)
+Withdrawal_data <- Withdrawal_data %>%
+  mutate(across(-withdrawal_scheme, as.numeric))
+withdrawal_amount <- Withdrawal_data %>%
+  select(withdrawal_scheme, contains("_amount"))%>%
+  rename_with(
+    ~ str_remove(., "_amount"),                  
+    .cols = !matches("withdrawal_scheme")) %>%
+  mutate(across(-withdrawal_scheme, ~ as.numeric(.x)))
+
+View(withdrawal_amount)
+
+# Step 1: Pivot longer
+withdrawal_amount_long <- withdrawal_amount %>%
+  pivot_longer(
+    cols = -withdrawal_scheme,
+    names_to = "year",
+    values_to = "amount"
+  ) %>%
+  mutate(year = as.numeric(year))  # Ensure year is numeric
+View(withdrawal_amount_long)
+
+# Step 2: Plot with facet_wrap
+ggplot(withdrawal_amount_long, aes(x = year, y = amount)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ withdrawal_scheme, scales = "free_y") +
+  theme_minimal() +
+  labs(
+    title = "EPF Withdrawals Amount by Scheme (2019–2023)",
+    x = "Year",
+    y = "Amount (RM)"
+  ) +
+  theme(
+    strip.text = element_text(size = 5), 
+    axis.text.x = element_text(size = 5),   
+    axis.text.y = element_text(size = 5),   
+    axis.title = element_text(size = 7),   
+    plot.title = element_text(size = 9)
+  )
+
+# Withdrawal Numbers
+withdrawal_number <- Withdrawal_data %>%
+  select(withdrawal_scheme, contains("_number"))%>%
+  rename_with(
+    ~ str_remove(., "_number"),                  
+    .cols = !matches("withdrawal_scheme")) %>%
+  mutate(across(-withdrawal_scheme, ~ as.numeric(.x)))
+
+View(withdrawal_number)
+
+# Step 1: Pivot longer
+withdrawal_number_long <- withdrawal_number %>%
+  pivot_longer(
+    cols = -withdrawal_scheme,
+    names_to = "year",
+    values_to = "number"
+  ) %>%
+  mutate(year = as.numeric(year))  # Ensure year is numeric
+View(withdrawal_number_long)
+
+# Step 2: Plot with facet_wrap
+ggplot(withdrawal_number_long, aes(x = year, y = number)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ withdrawal_scheme, scales = "free_y") +
+  theme_minimal() +
+  labs(
+    title = "EPF Withdrawals Number by Scheme (2019–2023)",
+    x = "Year",
+    y = "Number"
+  ) +
+  theme(
+    strip.text = element_text(size = 5), 
+    axis.text.x = element_text(size = 5),   
+    axis.text.y = element_text(size = 5),   
+    axis.title = element_text(size = 7),   
+    plot.title = element_text(size = 9)
+  )
