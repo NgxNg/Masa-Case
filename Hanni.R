@@ -13,7 +13,6 @@ colnames_new <- c("withdrawal_scheme", "2023_number", "2023_amount",
 colnames(Withdrawal_data) <- colnames_new
 Withdrawal_data <- Withdrawal_data[-1, ]
 View(Withdrawal_data)
-Withdrawal_data[is.na(Withdrawal_data)] <- 0
 
 library(dplyr)
 Withdrawal_data <- Withdrawal_data %>%
