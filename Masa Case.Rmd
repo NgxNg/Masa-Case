@@ -9,6 +9,7 @@ population = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\population
 wage = read.csv("C:\\Users\\user\\Desktop\\Masa-Case\\Data Set\\wage.csv")
 
 
+<<<<<<< HEAD
 wage_total <- wage %>%
   filter(Sex == "Total")
 
@@ -116,3 +117,4 @@ ggplot(withdrawal_number_long, aes(x = year, y = number)) +
     axis.title = element_text(size = 7),   
     plot.title = element_text(size = 9)
   )
+
