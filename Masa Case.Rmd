@@ -18,4 +18,36 @@ wage_male <- wage %>%
 wage_female <- wage %>%
   filter(Sex == "Female")
   
-  # Fk this
+library(readxl)
+population_d = read.csv("C:\\Users\\howar\\Downloads\\1.0 Dataset-20250423T024816Z-001\\1.0 Dataset\\population.csv")
+View(population_d)
+
+### Cleaning -- Population
+library(dplyr)
+population_d = population_d %>%
+  mutate(age.group = recode(age.group,
+                            "5-Sep" = "5-9",
+                            "Oct-14" = "10-14"))
+
+population_d <- population_d %>%
+  filter(age.group != "overall")
+
+library(xlsx)
+write.csv(population_d,file = 'Population_d.csv')
+
+### Plot
+population_d$population = as.integer(population_d$population)
+library(ggplot2)
+ggplot(population_d,aes(x = year, y = population), ylim = )+
+  geom_bar(stat = "identity")+
+  facet_wrap(~age.group)
+
+ggplot(population_d,aes(x = age.group, y = population), ylim = )+
+  geom_bar(stat = "identity")
+
+### Cleaning -- Employment
+employment_d = read.csv("C:\\Users\\howar\\Downloads\\1.0 Dataset-20250423T024816Z-001\\1.0 Dataset\\employment.csv")
+colnames(employment_d) = c("year", "total.labour.force('000)","employed ('000)","unemployed ('000)", "unemployment rate(%)")
+
+write.csv(employment_d,file = 'Employment_d.csv')
+
